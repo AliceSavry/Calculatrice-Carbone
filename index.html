@@ -48,6 +48,21 @@
             <p class="text-xl max-w-3xl mx-auto mb-8">
                 Outil complet pour mesurer l'empreinte carbone de votre entreprise ou de vos produits selon les standards internationaux (GHG Protocol, Bilan Carbone ADEME)
             </p>
+            
+            <!-- Vidéo intégrée -->
+            <div class="max-w-4xl mx-auto mb-8">
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 shadow-2xl">
+                    <video controls class="w-full rounded-lg shadow-lg" poster="https://picsum.photos/seed/video-thumb/1280/720.jpg">
+                        <source src="Démystifier_l_Empreinte_Carbone.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
+                </div>
+                <p class="text-sm mt-3 text-white/80">
+                    <i class="fas fa-play-circle mr-2"></i>
+                    Découvrez notre vidéo explicative pour comprendre les enjeux de l'empreinte carbone
+                </p>
+            </div>
+            
             <div class="flex justify-center space-x-4">
                 <button onclick="showCalculator('organization')" class="bg-white text-primary font-bold py-3 px-6 rounded-full hover:bg-light transition transform hover:scale-105">
                     <i class="fas fa-building mr-2"></i>Entreprise
@@ -102,178 +117,63 @@
                         <!-- Scope 1 Content -->
                         <div id="scope1" class="scope-section hidden">
                             <h4 class="text-xl font-semibold mb-4">Émissions Directes (Scope 1)</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="bg-white p-4 rounded-lg shadow">
-                                    <h5 class="font-bold mb-3">Combustion Fixe</h5>
-                                    <div class="space-y-3">
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Type de combustible</label>
-                                            <select class="w-full p-2 border rounded">
-                                                <option>Gaz Naturel</option>
-                                                <option>Fuel domestique</option>
-                                                <option>Charbon</option>
-                                                <option>Propane</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Consommation (kWh/an)</label>
-                                            <input type="number" class="w-full p-2 border rounded" placeholder="Ex: 50000">
-                                        </div>
-                                    </div>
+                            
+                            <!-- Combustion Fixe -->
+                            <div class="bg-white p-4 rounded-lg shadow mb-6">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h5 class="font-bold flex items-center">
+                                        <i class="fas fa-fire text-orange-500 mr-2"></i>Combustion Fixe
+                                    </h5>
+                                    <button onclick="addCombustionItem()" class="bg-orange-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-orange-600 transition">
+                                        <i class="fas fa-plus mr-1"></i>Ajouter
+                                    </button>
                                 </div>
-                                
-                                <div class="bg-white p-4 rounded-lg shadow">
-                                    <h5 class="font-bold mb-3">Véhicules de Flotte</h5>
-                                    <div class="space-y-3">
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Type de véhicule</label>
-                                            <select class="w-full p-2 border rounded">
-                                                <option>Voiture essence</option>
-                                                <option>Voiture diesel</option>
-                                                <option>Véhicule électrique</option>
-                                                <option>Camionnette</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Kilométrage annuel (km)</label>
-                                            <input type="number" class="w-full p-2 border rounded" placeholder="Ex: 25000">
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Nombre de véhicules</label>
-                                            <input type="number" class="w-full p-2 border rounded" placeholder="Ex: 5">
-                                        </div>
-                                    </div>
+                                <div id="combustion-list" class="space-y-3">
+                                    <!-- Les éléments seront ajoutés ici dynamiquement -->
+                                </div>
+                                <div class="mt-4 p-3 bg-orange-50 rounded-lg flex justify-between items-center">
+                                    <span class="font-semibold text-orange-800">Total Combustion Fixe</span>
+                                    <span class="text-lg font-bold text-orange-600" id="total-combustion">0 t CO2e/an</span>
                                 </div>
                             </div>
                             
-                            <div class="mt-6 bg-white p-4 rounded-lg shadow">
-                                <h5 class="font-bold mb-3 flex items-center">
-                                    <i class="fas fa-snowflake text-blue-500 mr-2"></i>
-                                    Émissions Fugitives (Fluides Frigorigènes)
-                                </h5>
+                            <!-- Véhicules de Flotte -->
+                            <div class="bg-white p-4 rounded-lg shadow mb-6">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h5 class="font-bold flex items-center">
+                                        <i class="fas fa-car text-blue-500 mr-2"></i>Véhicules de Flotte
+                                    </h5>
+                                    <button onclick="addVehicleItem()" class="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition">
+                                        <i class="fas fa-plus mr-1"></i>Ajouter
+                                    </button>
+                                </div>
+                                <div id="vehicle-list" class="space-y-3">
+                                    <!-- Les éléments seront ajoutés ici dynamiquement -->
+                                </div>
+                                <div class="mt-4 p-3 bg-blue-50 rounded-lg flex justify-between items-center">
+                                    <span class="font-semibold text-blue-800">Total Véhicules</span>
+                                    <span class="text-lg font-bold text-blue-600" id="total-vehicles">0 t CO2e/an</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Émissions Fugitives -->
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h5 class="font-bold flex items-center">
+                                        <i class="fas fa-snowflake text-cyan-500 mr-2"></i>
+                                        Émissions Fugitives (Équipements Frigorifiques)
+                                    </h5>
+                                    <button onclick="addFugitiveItem()" class="bg-cyan-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-cyan-600 transition">
+                                        <i class="fas fa-plus mr-1"></i>Ajouter un équipement
+                                    </button>
+                                </div>
                                 <p class="text-sm text-gray-600 mb-4">
                                     <i class="fas fa-info-circle mr-1"></i>
-                                    Les émissions fugitives proviennent des fuites de gaz réfrigérants. Le calcul est basé sur le type d'équipement, son âge et le taux de fuite moyen.
+                                    Les émissions fugitives proviennent des fuites de gaz réfrigérants. Ajoutez tous vos équipements contenant des fluides frigorigènes.
                                 </p>
                                 
-                                <!-- Réfrigérateurs -->
-                                <div class="border rounded-lg p-4 mb-4 bg-blue-50">
-                                    <h6 class="font-semibold mb-3 text-blue-800">
-                                        <i class="fas fa-temperature-low mr-2"></i>Réfrigérateurs / Chambres froides
-                                    </h6>
-                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Type d'équipement</label>
-                                            <select id="fridge-type" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
-                                                <option value="0">-- Sélectionner --</option>
-                                                <option value="mini">Mini-réfrigérateur (< 100L)</option>
-                                                <option value="standard">Réfrigérateur standard (100-300L)</option>
-                                                <option value="commercial">Réfrigérateur commercial (300-600L)</option>
-                                                <option value="chambre_pos">Chambre froide positive</option>
-                                                <option value="chambre_neg">Chambre froide négative</option>
-                                                <option value="vitrine">Vitrine réfrigérée</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Nombre d'unités</label>
-                                            <input type="number" id="fridge-count" class="w-full p-2 border rounded" placeholder="Ex: 3" min="0" onchange="calculateFugitiveEmissions()">
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Âge moyen (années)</label>
-                                            <select id="fridge-age" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
-                                                <option value="1">< 5 ans (récent)</option>
-                                                <option value="1.5">5-10 ans</option>
-                                                <option value="2">10-15 ans</option>
-                                                <option value="3">> 15 ans (ancien)</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Estimation CO2e</label>
-                                            <div class="w-full p-2 border rounded bg-gray-100 font-semibold text-green-700" id="fridge-emissions">
-                                                0 kg CO2e/an
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Climatiseurs -->
-                                <div class="border rounded-lg p-4 mb-4 bg-cyan-50">
-                                    <h6 class="font-semibold mb-3 text-cyan-800">
-                                        <i class="fas fa-wind mr-2"></i>Climatiseurs / Pompes à chaleur
-                                    </h6>
-                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Type d'équipement</label>
-                                            <select id="ac-type" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
-                                                <option value="0">-- Sélectionner --</option>
-                                                <option value="split_petit">Split individuel (< 3.5 kW)</option>
-                                                <option value="split_moyen">Split moyen (3.5-7 kW)</option>
-                                                <option value="split_grand">Split grande puissance (> 7 kW)</option>
-                                                <option value="multisplit">Multi-split (plusieurs unités)</option>
-                                                <option value="vrf">Système VRF/VRV</option>
-                                                <option value="rooftop">Roof-top / Centrale</option>
-                                                <option value="pac">Pompe à chaleur</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Nombre d'unités</label>
-                                            <input type="number" id="ac-count" class="w-full p-2 border rounded" placeholder="Ex: 5" min="0" onchange="calculateFugitiveEmissions()">
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Âge moyen (années)</label>
-                                            <select id="ac-age" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
-                                                <option value="1">< 5 ans (récent)</option>
-                                                <option value="1.5">5-10 ans</option>
-                                                <option value="2">10-15 ans</option>
-                                                <option value="3">> 15 ans (ancien)</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Estimation CO2e</label>
-                                            <div class="w-full p-2 border rounded bg-gray-100 font-semibold text-green-700" id="ac-emissions">
-                                                0 kg CO2e/an
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Autres équipements -->
-                                <div class="border rounded-lg p-4 bg-purple-50">
-                                    <h6 class="font-semibold mb-3 text-purple-800">
-                                        <i class="fas fa-cogs mr-2"></i>Autres Équipements
-                                    </h6>
-                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Type d'équipement</label>
-                                            <select id="other-type" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
-                                                <option value="0">-- Sélectionner --</option>
-                                                <option value="fontaine">Fontaine à eau réfrigérée</option>
-                                                <option value="distributeur">Distributeur de boissons</option>
-                                                <option value="congelateur">Congélateur</option>
-                                                <option value="vehicule">Véhicule frigorifique</option>
-                                                <option value="extincteur">Extincteur CO2</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Nombre d'unités</label>
-                                            <input type="number" id="other-count" class="w-full p-2 border rounded" placeholder="Ex: 2" min="0" onchange="calculateFugitiveEmissions()">
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Âge moyen (années)</label>
-                                            <select id="other-age" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
-                                                <option value="1">< 5 ans (récent)</option>
-                                                <option value="1.5">5-10 ans</option>
-                                                <option value="2">10-15 ans</option>
-                                                <option value="3">> 15 ans (ancien)</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium mb-1">Estimation CO2e</label>
-                                            <div class="w-full p-2 border rounded bg-gray-100 font-semibold text-green-700" id="other-emissions">
-                                                0 kg CO2e/an
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div id="fugitive-list" class="space-y-3">
+                                    <!-- Les éléments seront ajoutés ici dynamiquement -->
                                 </div>
                                 
                                 <!-- Total Émissions Fugitives -->
@@ -286,8 +186,18 @@
                                     </div>
                                     <p class="text-xs text-green-600 mt-2">
                                         <i class="fas fa-lightbulb mr-1"></i>
-                                        Conseil : Une maintenance régulière peut réduire les fuites de 30 à 50%. Les équipements récents utilisent des fluides à faible PRG (Potentiel de Réchauffement Global).
+                                        Conseil : Une maintenance régulière peut réduire les fuites de 30 à 50%. Les équipements récents utilisent des fluides à faible PRG.
                                     </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Total Scope 1 -->
+                            <div class="mt-6 p-4 bg-gradient-to-r from-red-100 to-orange-100 rounded-lg border border-red-300">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-gray-800 text-lg">
+                                        <i class="fas fa-fire-alt mr-2"></i>Total Scope 1
+                                    </span>
+                                    <span class="text-2xl font-bold text-red-600" id="total-scope1">0 t CO2e/an</span>
                                 </div>
                             </div>
                         </div>
@@ -364,49 +274,41 @@
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                     <!-- Cat 1: Achats de biens et services -->
                                     <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
-                                        <h6 class="font-bold mb-3 flex items-center">
-                                            <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">1</span>
-                                            Achats de biens et services
-                                        </h6>
-                                        <div class="space-y-3">
-                                            <div>
-                                                <label class="block text-sm font-medium mb-1">Montant annuel des achats (€)</label>
-                                                <input type="number" id="scope3-cat1-amount" class="w-full p-2 border rounded" placeholder="Ex: 500000" onchange="calculateScope3()">
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium mb-1">Type d'achats principal</label>
-                                                <select id="scope3-cat1-type" class="w-full p-2 border rounded" onchange="calculateScope3()">
-                                                    <option value="0.15">Services (conseil, IT, etc.)</option>
-                                                    <option value="0.35">Produits manufacturés</option>
-                                                    <option value="0.50">Matières premières</option>
-                                                    <option value="0.25">Fournitures de bureau</option>
-                                                </select>
-                                            </div>
-                                            <div class="text-right text-sm font-semibold text-blue-600" id="scope3-cat1-result">0 t CO2e</div>
+                                        <div class="flex justify-between items-center mb-3">
+                                            <h6 class="font-bold flex items-center">
+                                                <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">1</span>
+                                                Achats de biens et services
+                                            </h6>
+                                            <button onclick="addPurchaseItem()" class="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition">
+                                                <i class="fas fa-plus mr-1"></i>Ajouter
+                                            </button>
+                                        </div>
+                                        <div id="purchase-list" class="space-y-3 mb-3">
+                                            <!-- Les achats seront ajoutés ici dynamiquement -->
+                                        </div>
+                                        <div class="p-3 bg-blue-50 rounded-lg flex justify-between items-center">
+                                            <span class="font-semibold text-blue-800">Total Achats</span>
+                                            <span class="text-lg font-bold text-blue-600" id="scope3-cat1-result">0 t CO2e</span>
                                         </div>
                                     </div>
                                     
                                     <!-- Cat 2: Biens immobilisés -->
                                     <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-400">
-                                        <h6 class="font-bold mb-3 flex items-center">
-                                            <span class="bg-blue-400 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">2</span>
-                                            Biens immobilisés (amortissements)
-                                        </h6>
-                                        <div class="space-y-3">
-                                            <div>
-                                                <label class="block text-sm font-medium mb-1">Investissements annuels (€)</label>
-                                                <input type="number" id="scope3-cat2-amount" class="w-full p-2 border rounded" placeholder="Ex: 100000" onchange="calculateScope3()">
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium mb-1">Type d'investissement</label>
-                                                <select id="scope3-cat2-type" class="w-full p-2 border rounded" onchange="calculateScope3()">
-                                                    <option value="0.10">Bâtiments</option>
-                                                    <option value="0.25">Équipements industriels</option>
-                                                    <option value="0.40">Véhicules</option>
-                                                    <option value="0.15">Matériel informatique</option>
-                                                </select>
-                                            </div>
-                                            <div class="text-right text-sm font-semibold text-blue-600" id="scope3-cat2-result">0 t CO2e</div>
+                                        <div class="flex justify-between items-center mb-3">
+                                            <h6 class="font-bold flex items-center">
+                                                <span class="bg-blue-400 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">2</span>
+                                                Biens immobilisés (amortissements)
+                                            </h6>
+                                            <button onclick="addCapitalItem()" class="bg-blue-400 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-500 transition">
+                                                <i class="fas fa-plus mr-1"></i>Ajouter
+                                            </button>
+                                        </div>
+                                        <div id="capital-list" class="space-y-3 mb-3">
+                                            <!-- Les immobilisations seront ajoutées ici dynamiquement -->
+                                        </div>
+                                        <div class="p-3 bg-blue-50 rounded-lg flex justify-between items-center">
+                                            <span class="font-semibold text-blue-800">Total Immobilisations</span>
+                                            <span class="text-lg font-bold text-blue-600" id="scope3-cat2-result">0 t CO2e</span>
                                         </div>
                                     </div>
                                     
@@ -925,6 +827,88 @@
             </div>
         </div>
     </section>
+    
+    <script>
+        // Counter for unique purchase items
+        let purchaseCounter = 0;
+        let capitalCounter = 0;
+        
+        // Add purchase item
+        function addPurchaseItem() {
+            purchaseCounter++;
+            const list = document.getElementById('purchase-list');
+            const item = document.createElement('div');
+            item.id = `purchase-${purchaseCounter}`;
+            item.className = 'bg-white p-3 rounded-lg shadow mb-3';
+            item.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <span class="text-sm font-medium text-blue-800">Achat #${purchaseCounter}</span>
+                    <button onclick="removeItem('purchase-${purchaseCounter}')" class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Description</label>
+                        <input type="text" class="w-full p-2 border rounded text-sm" placeholder="Ex: Fournitures de bureau">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Montant (€)</label>
+                        <input type="number" class="w-full p-2 border rounded text-sm" placeholder="Ex: 5000" onchange="calculateScope3()">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Type</label>
+                        <select class="w-full p-2 border rounded text-sm" onchange="calculateScope3()">
+                            <option value="0.15">Services</option>
+                            <option value="0.35">Produits manufacturés</option>
+                            <option value="0.50">Matières premières</option>
+                            <option value="0.25">Fournitures de bureau</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            list.appendChild(item);
+            calculateScope3();
+        }
+        
+        // Add capital item
+        function addCapitalItem() {
+            capitalCounter++;
+            const list = document.getElementById('capital-list');
+            const item = document.createElement('div');
+            item.id = `capital-${capitalCounter}`;
+            item.className = 'bg-white p-3 rounded-lg shadow mb-3';
+            item.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <span class="text-sm font-medium text-blue-800">Immobilisation #${capitalCounter}</span>
+                    <button onclick="removeItem('capital-${capitalCounter}')" class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Description</label>
+                        <input type="text" class="w-full p-2 border rounded text-sm" placeholder="Ex: Ordinateurs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Montant (€)</label>
+                        <input type="number" class="w-full p-2 border rounded text-sm" placeholder="Ex: 10000" onchange="calculateScope3()">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Type</label>
+                        <select class="w-full p-2 border rounded text-sm" onchange="calculateScope3()">
+                            <option value="0.10">Bâtiments</option>
+                            <option value="0.25">Équipements industriels</option>
+                            <option value="0.40">Véhicules</option>
+                            <option value="0.15">Matériel informatique</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            list.appendChild(item);
+            calculateScope3();
+        }
+    </script>
 
     <!-- Results Section -->
     <section id="results" class="py-12 bg-gray-50">
@@ -1285,17 +1269,31 @@
             let amontTotal = 0;
             let avalTotal = 0;
             
-            // Cat 1: Achats
-            const cat1Amount = parseFloat(document.getElementById('scope3-cat1-amount')?.value) || 0;
-            const cat1Factor = parseFloat(document.getElementById('scope3-cat1-type')?.value) || 0.15;
-            const cat1Result = (cat1Amount * cat1Factor) / 1000; // Convert to tonnes
+            // Cat 1: Achats - Calculate all purchase items
+            let cat1Result = 0;
+            document.querySelectorAll('[id^="purchase-"]').forEach(item => {
+                const inputs = item.querySelectorAll('input[type="number"]');
+                const select = item.querySelector('select');
+                if (inputs.length > 0 && select) {
+                    const amount = parseFloat(inputs[0].value) || 0;
+                    const factor = parseFloat(select.value) || 0.15;
+                    cat1Result += (amount * factor) / 1000;
+                }
+            });
             document.getElementById('scope3-cat1-result').textContent = cat1Result.toFixed(2) + ' t CO2e';
             amontTotal += cat1Result;
             
-            // Cat 2: Biens immobilisés
-            const cat2Amount = parseFloat(document.getElementById('scope3-cat2-amount')?.value) || 0;
-            const cat2Factor = parseFloat(document.getElementById('scope3-cat2-type')?.value) || 0.10;
-            const cat2Result = (cat2Amount * cat2Factor) / 1000;
+            // Cat 2: Biens immobilisés - Calculate all capital items
+            let cat2Result = 0;
+            document.querySelectorAll('[id^="capital-"]').forEach(item => {
+                const inputs = item.querySelectorAll('input[type="number"]');
+                const select = item.querySelector('select');
+                if (inputs.length > 0 && select) {
+                    const amount = parseFloat(inputs[0].value) || 0;
+                    const factor = parseFloat(select.value) || 0.10;
+                    cat2Result += (amount * factor) / 1000;
+                }
+            });
             document.getElementById('scope3-cat2-result').textContent = cat2Result.toFixed(2) + ' t CO2e';
             amontTotal += cat2Result;
             
@@ -1418,86 +1416,339 @@
             document.getElementById('scope3-total').textContent = (amontTotal + avalTotal).toFixed(2) + ' t CO2e/an';
         }
         
-        // Emission factors for fugitive emissions (kg CO2e per unit per year)
-        // Based on ADEME Base Carbone and average leak rates
-        const fugitiveEmissionFactors = {
-            // Refrigerators - based on refrigerant charge and leak rate
-            fridge: {
-                mini: 15,           // ~0.1 kg R134a, 5% leak, GWP 1430
-                standard: 35,       // ~0.2 kg R134a
-                commercial: 120,    // ~0.5 kg R404A, GWP 3922
-                chambre_pos: 450,   // ~2 kg R404A
-                chambre_neg: 680,   // ~3 kg R404A
-                vitrine: 280        // ~1 kg R404A
+        // Emission factors
+        const emissionFactors = {
+            // Combustion fixe (kg CO2e per kWh)
+            combustion: {
+                gaz_naturel: 0.227,
+                fuel_domestique: 0.324,
+                charbon: 0.385,
+                propane: 0.274,
+                bois: 0.030
             },
-            // Air conditioners - based on refrigerant charge and leak rate
-            ac: {
-                split_petit: 85,    // ~0.8 kg R410A, 4% leak, GWP 2088
-                split_moyen: 145,   // ~1.5 kg R410A
-                split_grand: 250,   // ~2.5 kg R410A
-                multisplit: 420,    // ~4 kg R410A
-                vrf: 850,           // ~10 kg R410A
-                rooftop: 1200,      // ~15 kg R410A
-                pac: 380            // ~3 kg R410A
+            // Véhicules (kg CO2e per km)
+            vehicles: {
+                voiture_essence_petite: 0.154,
+                voiture_essence_moyenne: 0.193,
+                voiture_essence_grande: 0.254,
+                voiture_diesel_petite: 0.139,
+                voiture_diesel_moyenne: 0.171,
+                voiture_diesel_grande: 0.218,
+                voiture_hybride: 0.102,
+                voiture_electrique: 0.020,
+                camionnette_diesel: 0.249,
+                camionnette_electrique: 0.035,
+                poids_lourd_petit: 0.486,
+                poids_lourd_moyen: 0.682,
+                poids_lourd_grand: 0.892,
+                moto: 0.089,
+                scooter: 0.066
             },
-            // Other equipment
-            other: {
-                fontaine: 25,       // Small charge
-                distributeur: 45,   // Medium charge
-                congelateur: 85,    // Similar to commercial fridge
-                vehicule: 320,      // Transport refrigeration
-                extincteur: 5       // CO2 extinguisher (minimal annual leak)
+            // Émissions fugitives (kg CO2e per unit per year)
+            fugitive: {
+                // Réfrigérateurs
+                mini_frigo: { name: 'Mini-réfrigérateur (< 100L)', factor: 15, category: 'froid' },
+                frigo_standard: { name: 'Réfrigérateur standard (100-300L)', factor: 35, category: 'froid' },
+                frigo_commercial: { name: 'Réfrigérateur commercial (300-600L)', factor: 120, category: 'froid' },
+                chambre_froide_pos: { name: 'Chambre froide positive', factor: 450, category: 'froid' },
+                chambre_froide_neg: { name: 'Chambre froide négative', factor: 680, category: 'froid' },
+                vitrine_refrigeree: { name: 'Vitrine réfrigérée', factor: 280, category: 'froid' },
+                congelateur: { name: 'Congélateur', factor: 85, category: 'froid' },
+                // Climatisation
+                clim_split_petit: { name: 'Climatiseur split (< 3.5 kW)', factor: 85, category: 'clim' },
+                clim_split_moyen: { name: 'Climatiseur split (3.5-7 kW)', factor: 145, category: 'clim' },
+                clim_split_grand: { name: 'Climatiseur split (> 7 kW)', factor: 250, category: 'clim' },
+                clim_multisplit: { name: 'Multi-split', factor: 420, category: 'clim' },
+                clim_vrf: { name: 'Système VRF/VRV', factor: 850, category: 'clim' },
+                clim_rooftop: { name: 'Roof-top / Centrale', factor: 1200, category: 'clim' },
+                pac: { name: 'Pompe à chaleur', factor: 380, category: 'clim' },
+                // Autres
+                fontaine_eau: { name: 'Fontaine à eau réfrigérée', factor: 25, category: 'autre' },
+                distributeur: { name: 'Distributeur de boissons', factor: 45, category: 'autre' },
+                vehicule_frigo: { name: 'Véhicule frigorifique', factor: 320, category: 'autre' },
+                machine_glace: { name: 'Machine à glaçons', factor: 55, category: 'autre' },
+                cave_vin: { name: 'Cave à vin', factor: 30, category: 'autre' }
             }
         };
         
-        // Calculate fugitive emissions
-        function calculateFugitiveEmissions() {
-            // Refrigerators
-            const fridgeType = document.getElementById('fridge-type').value;
-            const fridgeCount = parseFloat(document.getElementById('fridge-count').value) || 0;
-            const fridgeAge = parseFloat(document.getElementById('fridge-age').value) || 1;
+        // Counters for unique IDs
+        let combustionCounter = 0;
+        let vehicleCounter = 0;
+        let fugitiveCounter = 0;
+        
+        // Add combustion item
+        function addCombustionItem() {
+            combustionCounter++;
+            const list = document.getElementById('combustion-list');
+            const item = document.createElement('div');
+            item.id = `combustion-${combustionCounter}`;
+            item.className = 'bg-orange-50 p-3 rounded-lg border border-orange-200';
+            item.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-sm font-medium text-orange-800">Équipement #${combustionCounter}</span>
+                    <button onclick="removeItem('combustion-${combustionCounter}')" class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Type de combustible</label>
+                        <select class="w-full p-2 border rounded text-sm" onchange="calculateScope1()">
+                            <option value="gaz_naturel">Gaz Naturel</option>
+                            <option value="fuel_domestique">Fuel domestique</option>
+                            <option value="charbon">Charbon</option>
+                            <option value="propane">Propane / GPL</option>
+                            <option value="bois">Bois / Biomasse</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Usage</label>
+                        <input type="text" class="w-full p-2 border rounded text-sm" placeholder="Ex: Chauffage bâtiment A">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Consommation (kWh/an)</label>
+                        <input type="number" class="w-full p-2 border rounded text-sm" placeholder="Ex: 50000" onchange="calculateScope1()">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Émissions</label>
+                        <div class="w-full p-2 border rounded bg-white text-sm font-semibold text-orange-600">0 t CO2e</div>
+                    </div>
+                </div>
+            `;
+            list.appendChild(item);
+            calculateScope1();
+        }
+        
+        // Add vehicle item
+        function addVehicleItem() {
+            vehicleCounter++;
+            const list = document.getElementById('vehicle-list');
+            const item = document.createElement('div');
+            item.id = `vehicle-${vehicleCounter}`;
+            item.className = 'bg-blue-50 p-3 rounded-lg border border-blue-200';
+            item.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-sm font-medium text-blue-800">Véhicule #${vehicleCounter}</span>
+                    <button onclick="removeItem('vehicle-${vehicleCounter}')" class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Type de véhicule</label>
+                        <select class="w-full p-2 border rounded text-sm" onchange="calculateScope1()">
+                            <optgroup label="Voitures Essence">
+                                <option value="voiture_essence_petite">Citadine essence</option>
+                                <option value="voiture_essence_moyenne">Berline essence</option>
+                                <option value="voiture_essence_grande">SUV/Break essence</option>
+                            </optgroup>
+                            <optgroup label="Voitures Diesel">
+                                <option value="voiture_diesel_petite">Citadine diesel</option>
+                                <option value="voiture_diesel_moyenne">Berline diesel</option>
+                                <option value="voiture_diesel_grande">SUV/Break diesel</option>
+                            </optgroup>
+                            <optgroup label="Voitures Alternatives">
+                                <option value="voiture_hybride">Hybride</option>
+                                <option value="voiture_electrique">Électrique</option>
+                            </optgroup>
+                            <optgroup label="Utilitaires">
+                                <option value="camionnette_diesel">Camionnette diesel</option>
+                                <option value="camionnette_electrique">Camionnette électrique</option>
+                            </optgroup>
+                            <optgroup label="Poids Lourds">
+                                <option value="poids_lourd_petit">Poids lourd < 7.5t</option>
+                                <option value="poids_lourd_moyen">Poids lourd 7.5-19t</option>
+                                <option value="poids_lourd_grand">Poids lourd > 19t</option>
+                            </optgroup>
+                            <optgroup label="Deux-roues">
+                                <option value="moto">Moto</option>
+                                <option value="scooter">Scooter</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Identification</label>
+                        <input type="text" class="w-full p-2 border rounded text-sm" placeholder="Ex: Véhicule commercial">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Nombre</label>
+                        <input type="number" class="w-full p-2 border rounded text-sm" placeholder="Ex: 3" min="1" value="1" onchange="calculateScope1()">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Km/an par véhicule</label>
+                        <input type="number" class="w-full p-2 border rounded text-sm" placeholder="Ex: 25000" onchange="calculateScope1()">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Émissions</label>
+                        <div class="w-full p-2 border rounded bg-white text-sm font-semibold text-blue-600">0 t CO2e</div>
+                    </div>
+                </div>
+            `;
+            list.appendChild(item);
+            calculateScope1();
+        }
+        
+        // Add fugitive emission item
+        function addFugitiveItem() {
+            fugitiveCounter++;
+            const list = document.getElementById('fugitive-list');
+            const item = document.createElement('div');
+            item.id = `fugitive-${fugitiveCounter}`;
+            item.className = 'bg-cyan-50 p-3 rounded-lg border border-cyan-200';
             
-            let fridgeEmissions = 0;
-            if (fridgeType !== '0' && fridgeCount > 0) {
-                fridgeEmissions = fugitiveEmissionFactors.fridge[fridgeType] * fridgeCount * fridgeAge;
+            // Build options from emissionFactors.fugitive
+            let optionsHTML = '<option value="">-- Sélectionner --</option>';
+            optionsHTML += '<optgroup label="🧊 Froid commercial">';
+            for (const [key, value] of Object.entries(emissionFactors.fugitive)) {
+                if (value.category === 'froid') {
+                    optionsHTML += `<option value="${key}">${value.name}</option>`;
+                }
             }
-            document.getElementById('fridge-emissions').textContent = Math.round(fridgeEmissions) + ' kg CO2e/an';
-            
-            // Air conditioners
-            const acType = document.getElementById('ac-type').value;
-            const acCount = parseFloat(document.getElementById('ac-count').value) || 0;
-            const acAge = parseFloat(document.getElementById('ac-age').value) || 1;
-            
-            let acEmissions = 0;
-            if (acType !== '0' && acCount > 0) {
-                acEmissions = fugitiveEmissionFactors.ac[acType] * acCount * acAge;
+            optionsHTML += '</optgroup><optgroup label="❄️ Climatisation">';
+            for (const [key, value] of Object.entries(emissionFactors.fugitive)) {
+                if (value.category === 'clim') {
+                    optionsHTML += `<option value="${key}">${value.name}</option>`;
+                }
             }
-            document.getElementById('ac-emissions').textContent = Math.round(acEmissions) + ' kg CO2e/an';
-            
-            // Other equipment
-            const otherType = document.getElementById('other-type').value;
-            const otherCount = parseFloat(document.getElementById('other-count').value) || 0;
-            const otherAge = parseFloat(document.getElementById('other-age').value) || 1;
-            
-            let otherEmissions = 0;
-            if (otherType !== '0' && otherCount > 0) {
-                otherEmissions = fugitiveEmissionFactors.other[otherType] * otherCount * otherAge;
+            optionsHTML += '</optgroup><optgroup label="🔧 Autres équipements">';
+            for (const [key, value] of Object.entries(emissionFactors.fugitive)) {
+                if (value.category === 'autre') {
+                    optionsHTML += `<option value="${key}">${value.name}</option>`;
+                }
             }
-            document.getElementById('other-emissions').textContent = Math.round(otherEmissions) + ' kg CO2e/an';
+            optionsHTML += '</optgroup>';
             
-            // Total
-            const totalEmissions = fridgeEmissions + acEmissions + otherEmissions;
-            document.getElementById('total-fugitive-emissions').textContent = Math.round(totalEmissions) + ' kg CO2e/an';
+            item.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-sm font-medium text-cyan-800">Équipement #${fugitiveCounter}</span>
+                    <button onclick="removeItem('fugitive-${fugitiveCounter}')" class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-medium mb-1">Type d'équipement</label>
+                        <select class="w-full p-2 border rounded text-sm bg-white" onchange="calculateScope1()">
+                            ${optionsHTML}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Nombre d'unités</label>
+                        <input type="number" class="w-full p-2 border rounded text-sm" placeholder="Ex: 2" min="1" value="1" onchange="calculateScope1()">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Âge moyen</label>
+                        <select class="w-full p-2 border rounded text-sm bg-white" onchange="calculateScope1()">
+                            <option value="1">< 5 ans (récent)</option>
+                            <option value="1.5">5-10 ans</option>
+                            <option value="2">10-15 ans</option>
+                            <option value="3">> 15 ans (ancien)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Émissions</label>
+                        <div class="w-full p-2 border rounded bg-white text-sm font-semibold text-cyan-600">0 kg CO2e/an</div>
+                    </div>
+                </div>
+            `;
+            list.appendChild(item);
+            calculateScope1();
+        }
+        
+        // Remove item
+        function removeItem(id) {
+            const item = document.getElementById(id);
+            if (item) {
+                item.remove();
+                calculateScope1();
+            }
+        }
+        
+        // Calculate all Scope 1 emissions
+        function calculateScope1() {
+            let totalCombustion = 0;
+            let totalVehicles = 0;
+            let totalFugitive = 0;
             
-            // Update color based on emission level
-            const totalElement = document.getElementById('total-fugitive-emissions');
-            if (totalEmissions > 2000) {
-                totalElement.className = 'text-xl font-bold text-red-600';
-            } else if (totalEmissions > 500) {
-                totalElement.className = 'text-xl font-bold text-orange-600';
+            // Calculate combustion emissions
+            document.querySelectorAll('[id^="combustion-"]').forEach(item => {
+                const select = item.querySelector('select');
+                const inputs = item.querySelectorAll('input[type="number"]');
+                const resultDiv = item.querySelector('div.font-semibold');
+                
+                if (select && inputs.length > 0 && resultDiv) {
+                    const fuelType = select.value;
+                    const consumption = parseFloat(inputs[0].value) || 0;
+                    const factor = emissionFactors.combustion[fuelType] || 0;
+                    const emissions = (consumption * factor) / 1000; // Convert to tonnes
+                    totalCombustion += emissions;
+                    resultDiv.textContent = emissions.toFixed(2) + ' t CO2e';
+                }
+            });
+            
+            // Calculate vehicle emissions
+            document.querySelectorAll('[id^="vehicle-"]').forEach(item => {
+                const select = item.querySelector('select');
+                const inputs = item.querySelectorAll('input[type="number"]');
+                const resultDiv = item.querySelector('div.font-semibold');
+                
+                if (select && inputs.length >= 2 && resultDiv) {
+                    const vehicleType = select.value;
+                    const count = parseFloat(inputs[0].value) || 0;
+                    const km = parseFloat(inputs[1].value) || 0;
+                    const factor = emissionFactors.vehicles[vehicleType] || 0;
+                    const emissions = (count * km * factor) / 1000; // Convert to tonnes
+                    totalVehicles += emissions;
+                    resultDiv.textContent = emissions.toFixed(2) + ' t CO2e';
+                }
+            });
+            
+            // Calculate fugitive emissions
+            document.querySelectorAll('[id^="fugitive-"]').forEach(item => {
+                const select = item.querySelector('select');
+                const inputs = item.querySelectorAll('input[type="number"]');
+                const ageSelect = item.querySelectorAll('select')[1];
+                const resultDiv = item.querySelector('div.font-semibold');
+                
+                if (select && inputs.length > 0 && resultDiv) {
+                    const equipType = select.value;
+                    const count = parseFloat(inputs[0].value) || 0;
+                    const ageFactor = parseFloat(ageSelect?.value) || 1;
+                    const equipData = emissionFactors.fugitive[equipType];
+                    
+                    if (equipData && count > 0) {
+                        const emissions = equipData.factor * count * ageFactor;
+                        totalFugitive += emissions;
+                        resultDiv.textContent = Math.round(emissions) + ' kg CO2e/an';
+                    } else {
+                        resultDiv.textContent = '0 kg CO2e/an';
+                    }
+                }
+            });
+            
+            // Update totals
+            document.getElementById('total-combustion').textContent = totalCombustion.toFixed(2) + ' t CO2e/an';
+            document.getElementById('total-vehicles').textContent = totalVehicles.toFixed(2) + ' t CO2e/an';
+            document.getElementById('total-fugitive-emissions').textContent = Math.round(totalFugitive) + ' kg CO2e/an';
+            
+            // Update fugitive color based on level
+            const fugitiveElement = document.getElementById('total-fugitive-emissions');
+            if (totalFugitive > 2000) {
+                fugitiveElement.className = 'text-xl font-bold text-red-600';
+            } else if (totalFugitive > 500) {
+                fugitiveElement.className = 'text-xl font-bold text-orange-600';
             } else {
-                totalElement.className = 'text-xl font-bold text-green-700';
+                fugitiveElement.className = 'text-xl font-bold text-green-700';
             }
+            
+            // Calculate total Scope 1 (convert fugitive from kg to tonnes)
+            const totalScope1 = totalCombustion + totalVehicles + (totalFugitive / 1000);
+            document.getElementById('total-scope1').textContent = totalScope1.toFixed(2) + ' t CO2e/an';
+        }
+        
+        // Legacy function for compatibility
+        function calculateFugitiveEmissions() {
+            calculateScope1();
         }
         
         // Calculate organization footprint
