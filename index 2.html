@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur d'Empreinte Carbone - Entreprise & Produits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2D5A27',
+                        secondary: '#4CAF50',
+                        accent: '#8BC34A',
+                        light: '#DCEDC8',
+                        dark: '#1B5E20'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-primary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-leaf text-2xl"></i>
+                <h1 class="text-2xl font-bold">EcoCalc Carbon</h1>
+            </div>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#" class="hover:text-accent transition">Accueil</a></li>
+                    <li><a href="#calculator" class="hover:text-accent transition">Calculateur</a></li>
+                    <li><a href="#results" class="hover:text-accent transition">Résultats</a></li>
+                    <li><a href="#resources" class="hover:text-accent transition">Ressources</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-primary to-secondary text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Calculez votre empreinte carbone</h1>
+            <p class="text-xl max-w-3xl mx-auto mb-8">
+                Outil complet pour mesurer l'empreinte carbone de votre entreprise ou de vos produits selon les standards internationaux (GHG Protocol, Bilan Carbone ADEME)
+            </p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="showCalculator('organization')" class="bg-white text-primary font-bold py-3 px-6 rounded-full hover:bg-light transition transform hover:scale-105">
+                    <i class="fas fa-building mr-2"></i>Entreprise
+                </button>
+                <button onclick="showCalculator('product')" class="bg-dark text-white font-bold py-3 px-6 rounded-full hover:bg-black transition transform hover:scale-105">
+                    <i class="fas fa-box mr-2"></i>Produit
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section id="calculator" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-primary">Calculateur d'Empreinte Carbone</h2>
+            
+            <!-- Organization Calculator -->
+            <div id="organization-calculator" class="hidden">
+                <div class="bg-gray-50 rounded-xl shadow-lg p-6 mb-8">
+                    <h3 class="text-2xl font-bold mb-6 text-primary flex items-center">
+                        <i class="fas fa-industry mr-3"></i>Calcul Organisationnel
+                    </h3>
+                    
+                    <!-- Progress Bar -->
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">Progression globale</span>
+                            <span id="org-progress-text">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4">
+                            <div id="org-progress-bar" class="bg-secondary h-4 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Scope Tabs -->
+                    <div class="mb-6 border-b border-gray-200">
+                        <nav class="flex flex-wrap -mb-px">
+                            <button onclick="showScope('scope1')" class="scope-tab py-4 px-6 font-medium text-center border-b-2 border-transparent hover:border-secondary">
+                                <i class="fas fa-fire mr-2"></i>Scope 1 - Directes
+                            </button>
+                            <button onclick="showScope('scope2')" class="scope-tab py-4 px-6 font-medium text-center border-b-2 border-transparent hover:border-secondary">
+                                <i class="fas fa-bolt mr-2"></i>Scope 2 - Énergie
+                            </button>
+                            <button onclick="showScope('scope3')" class="scope-tab py-4 px-6 font-medium text-center border-b-2 border-transparent hover:border-secondary">
+                                <i class="fas fa-link mr-2"></i>Scope 3 - Indirectes
+                            </button>
+                        </nav>
+                    </div>
+                    
+                    <!-- Scope Content -->
+                    <div id="scope-content" class="mt-6">
+                        <!-- Scope 1 Content -->
+                        <div id="scope1" class="scope-section hidden">
+                            <h4 class="text-xl font-semibold mb-4">Émissions Directes (Scope 1)</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-white p-4 rounded-lg shadow">
+                                    <h5 class="font-bold mb-3">Combustion Fixe</h5>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Type de combustible</label>
+                                            <select class="w-full p-2 border rounded">
+                                                <option>Gaz Naturel</option>
+                                                <option>Fuel domestique</option>
+                                                <option>Charbon</option>
+                                                <option>Propane</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Consommation (kWh/an)</label>
+                                            <input type="number" class="w-full p-2 border rounded" placeholder="Ex: 50000">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white p-4 rounded-lg shadow">
+                                    <h5 class="font-bold mb-3">Véhicules de Flotte</h5>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Type de véhicule</label>
+                                            <select class="w-full p-2 border rounded">
+                                                <option>Voiture essence</option>
+                                                <option>Voiture diesel</option>
+                                                <option>Véhicule électrique</option>
+                                                <option>Camionnette</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Kilométrage annuel (km)</label>
+                                            <input type="number" class="w-full p-2 border rounded" placeholder="Ex: 25000">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Nombre de véhicules</label>
+                                            <input type="number" class="w-full p-2 border rounded" placeholder="Ex: 5">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 bg-white p-4 rounded-lg shadow">
+                                <h5 class="font-bold mb-3 flex items-center">
+                                    <i class="fas fa-snowflake text-blue-500 mr-2"></i>
+                                    Émissions Fugitives (Fluides Frigorigènes)
+                                </h5>
+                                <p class="text-sm text-gray-600 mb-4">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Les émissions fugitives proviennent des fuites de gaz réfrigérants. Le calcul est basé sur le type d'équipement, son âge et le taux de fuite moyen.
+                                </p>
+                                
+                                <!-- Réfrigérateurs -->
+                                <div class="border rounded-lg p-4 mb-4 bg-blue-50">
+                                    <h6 class="font-semibold mb-3 text-blue-800">
+                                        <i class="fas fa-temperature-low mr-2"></i>Réfrigérateurs / Chambres froides
+                                    </h6>
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Type d'équipement</label>
+                                            <select id="fridge-type" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
+                                                <option value="0">-- Sélectionner --</option>
+                                                <option value="mini">Mini-réfrigérateur (< 100L)</option>
+                                                <option value="standard">Réfrigérateur standard (100-300L)</option>
+                                                <option value="commercial">Réfrigérateur commercial (300-600L)</option>
+                                                <option value="chambre_pos">Chambre froide positive</option>
+                                                <option value="chambre_neg">Chambre froide négative</option>
+                                                <option value="vitrine">Vitrine réfrigérée</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Nombre d'unités</label>
+                                            <input type="number" id="fridge-count" class="w-full p-2 border rounded" placeholder="Ex: 3" min="0" onchange="calculateFugitiveEmissions()">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Âge moyen (années)</label>
+                                            <select id="fridge-age" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
+                                                <option value="1">< 5 ans (récent)</option>
+                                                <option value="1.5">5-10 ans</option>
+                                                <option value="2">10-15 ans</option>
+                                                <option value="3">> 15 ans (ancien)</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Estimation CO2e</label>
+                                            <div class="w-full p-2 border rounded bg-gray-100 font-semibold text-green-700" id="fridge-emissions">
+                                                0 kg CO2e/an
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Climatiseurs -->
+                                <div class="border rounded-lg p-4 mb-4 bg-cyan-50">
+                                    <h6 class="font-semibold mb-3 text-cyan-800">
+                                        <i class="fas fa-wind mr-2"></i>Climatiseurs / Pompes à chaleur
+                                    </h6>
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Type d'équipement</label>
+                                            <select id="ac-type" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
+                                                <option value="0">-- Sélectionner --</option>
+                                                <option value="split_petit">Split individuel (< 3.5 kW)</option>
+                                                <option value="split_moyen">Split moyen (3.5-7 kW)</option>
+                                                <option value="split_grand">Split grande puissance (> 7 kW)</option>
+                                                <option value="multisplit">Multi-split (plusieurs unités)</option>
+                                                <option value="vrf">Système VRF/VRV</option>
+                                                <option value="rooftop">Roof-top / Centrale</option>
+                                                <option value="pac">Pompe à chaleur</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Nombre d'unités</label>
+                                            <input type="number" id="ac-count" class="w-full p-2 border rounded" placeholder="Ex: 5" min="0" onchange="calculateFugitiveEmissions()">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Âge moyen (années)</label>
+                                            <select id="ac-age" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
+                                                <option value="1">< 5 ans (récent)</option>
+                                                <option value="1.5">5-10 ans</option>
+                                                <option value="2">10-15 ans</option>
+                                                <option value="3">> 15 ans (ancien)</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Estimation CO2e</label>
+                                            <div class="w-full p-2 border rounded bg-gray-100 font-semibold text-green-700" id="ac-emissions">
+                                                0 kg CO2e/an
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Autres équipements -->
+                                <div class="border rounded-lg p-4 bg-purple-50">
+                                    <h6 class="font-semibold mb-3 text-purple-800">
+                                        <i class="fas fa-cogs mr-2"></i>Autres Équipements
+                                    </h6>
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Type d'équipement</label>
+                                            <select id="other-type" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
+                                                <option value="0">-- Sélectionner --</option>
+                                                <option value="fontaine">Fontaine à eau réfrigérée</option>
+                                                <option value="distributeur">Distributeur de boissons</option>
+                                                <option value="congelateur">Congélateur</option>
+                                                <option value="vehicule">Véhicule frigorifique</option>
+                                                <option value="extincteur">Extincteur CO2</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Nombre d'unités</label>
+                                            <input type="number" id="other-count" class="w-full p-2 border rounded" placeholder="Ex: 2" min="0" onchange="calculateFugitiveEmissions()">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Âge moyen (années)</label>
+                                            <select id="other-age" class="w-full p-2 border rounded bg-white" onchange="calculateFugitiveEmissions()">
+                                                <option value="1">< 5 ans (récent)</option>
+                                                <option value="1.5">5-10 ans</option>
+                                                <option value="2">10-15 ans</option>
+                                                <option value="3">> 15 ans (ancien)</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Estimation CO2e</label>
+                                            <div class="w-full p-2 border rounded bg-gray-100 font-semibold text-green-700" id="other-emissions">
+                                                0 kg CO2e/an
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Total Émissions Fugitives -->
+                                <div class="mt-4 p-4 bg-green-100 rounded-lg border border-green-300">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-green-800">
+                                            <i class="fas fa-calculator mr-2"></i>Total Émissions Fugitives
+                                        </span>
+                                        <span class="text-xl font-bold text-green-700" id="total-fugitive-emissions">0 kg CO2e/an</span>
+                                    </div>
+                                    <p class="text-xs text-green-600 mt-2">
+                                        <i class="fas fa-lightbulb mr-1"></i>
+                                        Conseil : Une maintenance régulière peut réduire les fuites de 30 à 50%. Les équipements récents utilisent des fluides à faible PRG (Potentiel de Réchauffement Global).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Scope 2 Content -->
+                        <div id="scope2" class="scope-section hidden">
+                            <h4 class="text-xl font-semibold mb-4">Émissions Énergétiques (Scope 2)</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-white p-4 rounded-lg shadow">
+                                    <h5 class="font-bold mb-3">Électricité</h5>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Consommation annuelle (kWh)</label>
+                                            <input type="number" class="w-full p-2 border rounded" placeholder="Ex: 150000">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Source d'énergie</label>
+                                            <select class="w-full p-2 border rounded">
+                                                <option>Mix électrique national</option>
+                                                <option>Électricité verte (garanties d'origine)</option>
+                                                <option>Panneaux solaires</option>
+                                                <option>Éolien</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white p-4 rounded-lg shadow">
+                                    <h5 class="font-bold mb-3">Chaleur Achetée</h5>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Type d'énergie</label>
+                                            <select class="w-full p-2 border rounded">
+                                                <option>Chauffage urbain</option>
+                                                <option>Gaz naturel</option>
+                                                <option>Fuel</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Consommation (kWh)</label>
+                                            <input type="number" class="w-full p-2 border rounded" placeholder="Ex: 80000">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Scope 3 Content -->
+                        <div id="scope3" class="scope-section hidden">
+                            <div class="mb-6">
+                                <h4 class="text-xl font-semibold mb-2">Émissions Indirectes (Scope 3)</h4>
+                                <p class="text-sm text-gray-600">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Le Scope 3 couvre toutes les émissions indirectes de votre chaîne de valeur. Selon le GHG Protocol, il est divisé en 15 catégories.
+                                </p>
+                            </div>
+                            
+                            <!-- Scope 3 Categories Navigation -->
+                            <div class="mb-6 flex flex-wrap gap-2">
+                                <button onclick="showScope3Category('amont')" class="scope3-cat-btn bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-blue-200 transition">
+                                    <i class="fas fa-arrow-left mr-1"></i>Amont (1-8)
+                                </button>
+                                <button onclick="showScope3Category('aval')" class="scope3-cat-btn bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-green-200 transition">
+                                    <i class="fas fa-arrow-right mr-1"></i>Aval (9-15)
+                                </button>
+                            </div>
+                            
+                            <!-- Catégories Amont (1-8) -->
+                            <div id="scope3-amont" class="scope3-category">
+                                <h5 class="font-bold text-lg mb-4 text-blue-800">
+                                    <i class="fas fa-arrow-circle-left mr-2"></i>Émissions Amont
+                                </h5>
+                                
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                    <!-- Cat 1: Achats de biens et services -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">1</span>
+                                            Achats de biens et services
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Montant annuel des achats (€)</label>
+                                                <input type="number" id="scope3-cat1-amount" class="w-full p-2 border rounded" placeholder="Ex: 500000" onchange="calculateScope3()">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Type d'achats principal</label>
+                                                <select id="scope3-cat1-type" class="w-full p-2 border rounded" onchange="calculateScope3()">
+                                                    <option value="0.15">Services (conseil, IT, etc.)</option>
+                                                    <option value="0.35">Produits manufacturés</option>
+                                                    <option value="0.50">Matières premières</option>
+                                                    <option value="0.25">Fournitures de bureau</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-blue-600" id="scope3-cat1-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 2: Biens immobilisés -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-400">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-blue-400 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">2</span>
+                                            Biens immobilisés (amortissements)
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Investissements annuels (€)</label>
+                                                <input type="number" id="scope3-cat2-amount" class="w-full p-2 border rounded" placeholder="Ex: 100000" onchange="calculateScope3()">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Type d'investissement</label>
+                                                <select id="scope3-cat2-type" class="w-full p-2 border rounded" onchange="calculateScope3()">
+                                                    <option value="0.10">Bâtiments</option>
+                                                    <option value="0.25">Équipements industriels</option>
+                                                    <option value="0.40">Véhicules</option>
+                                                    <option value="0.15">Matériel informatique</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-blue-600" id="scope3-cat2-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 3: Combustibles et énergie -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-300">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-blue-300 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">3</span>
+                                            Combustibles et énergie (hors Scope 1&2)
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Consommation électricité (kWh) - amont</label>
+                                                <input type="number" id="scope3-cat3-elec" class="w-full p-2 border rounded" placeholder="Même valeur que Scope 2" onchange="calculateScope3()">
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-blue-600" id="scope3-cat3-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 4: Transport amont -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-indigo-500">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-indigo-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">4</span>
+                                            Transport et distribution amont
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Tonnes-km transportées (fournisseurs)</label>
+                                                <input type="number" id="scope3-cat4-tkm" class="w-full p-2 border rounded" placeholder="Ex: 50000" onchange="calculateScope3()">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Mode principal</label>
+                                                <select id="scope3-cat4-mode" class="w-full p-2 border rounded" onchange="calculateScope3()">
+                                                    <option value="0.062">Camion (route)</option>
+                                                    <option value="0.022">Train (fret)</option>
+                                                    <option value="0.016">Bateau (maritime)</option>
+                                                    <option value="0.602">Avion (fret)</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-blue-600" id="scope3-cat4-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 5: Déchets -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-amber-500">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">5</span>
+                                            Déchets générés
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Quantité de déchets (tonnes/an)</label>
+                                                <input type="number" id="scope3-cat5-qty" class="w-full p-2 border rounded" placeholder="Ex: 15" onchange="calculateScope3()">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Traitement principal</label>
+                                                <select id="scope3-cat5-type" class="w-full p-2 border rounded" onchange="calculateScope3()">
+                                                    <option value="0.5">Mise en décharge</option>
+                                                    <option value="0.02">Recyclage</option>
+                                                    <option value="0.04">Incinération avec valorisation</option>
+                                                    <option value="0.9">Incinération sans valorisation</option>
+                                                    <option value="0.01">Compostage</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-blue-600" id="scope3-cat5-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 6: Voyages d'affaires -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-purple-500">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">6</span>
+                                            Voyages d'affaires
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div class="grid grid-cols-2 gap-2">
+                                                <div>
+                                                    <label class="block text-xs font-medium mb-1">Avion (km/an)</label>
+                                                    <input type="number" id="scope3-cat6-avion" class="w-full p-2 border rounded text-sm" placeholder="Ex: 50000" onchange="calculateScope3()">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-medium mb-1">Train (km/an)</label>
+                                                    <input type="number" id="scope3-cat6-train" class="w-full p-2 border rounded text-sm" placeholder="Ex: 20000" onchange="calculateScope3()">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-medium mb-1">Voiture location/taxi (km/an)</label>
+                                                <input type="number" id="scope3-cat6-voiture" class="w-full p-2 border rounded text-sm" placeholder="Ex: 10000" onchange="calculateScope3()">
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-purple-600" id="scope3-cat6-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 7: Déplacements domicile-travail -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-rose-500 col-span-1 lg:col-span-2">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-rose-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">7</span>
+                                            <i class="fas fa-car mr-2"></i>Déplacements domicile-travail des salariés
+                                        </h6>
+                                        <p class="text-xs text-gray-500 mb-3">
+                                            <i class="fas fa-info-circle mr-1"></i>
+                                            Calculez les émissions des trajets quotidiens de vos employés
+                                        </p>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <!-- Méthode simplifiée -->
+                                            <div class="bg-rose-50 p-4 rounded-lg">
+                                                <h6 class="font-semibold mb-3 text-rose-800">Méthode Simplifiée</h6>
+                                                <div class="space-y-3">
+                                                    <div>
+                                                        <label class="block text-sm font-medium mb-1">Nombre total d'employés</label>
+                                                        <input type="number" id="scope3-cat7-employees" class="w-full p-2 border rounded" placeholder="Ex: 50" onchange="calculateScope3()">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium mb-1">Distance moyenne aller simple (km)</label>
+                                                        <input type="number" id="scope3-cat7-distance" class="w-full p-2 border rounded" placeholder="Ex: 15" onchange="calculateScope3()">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium mb-1">Jours travaillés par an</label>
+                                                        <input type="number" id="scope3-cat7-days" class="w-full p-2 border rounded" placeholder="Ex: 220" value="220" onchange="calculateScope3()">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Répartition modale -->
+                                            <div class="bg-rose-50 p-4 rounded-lg">
+                                                <h6 class="font-semibold mb-3 text-rose-800">Répartition Modale (%)</h6>
+                                                <div class="space-y-2">
+                                                    <div class="flex items-center gap-2">
+                                                        <i class="fas fa-car text-gray-600 w-6"></i>
+                                                        <label class="text-sm flex-1">Voiture solo</label>
+                                                        <input type="number" id="scope3-cat7-car" class="w-20 p-1 border rounded text-sm text-right" placeholder="60" value="60" onchange="calculateScope3()">
+                                                        <span class="text-xs">%</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-2">
+                                                        <i class="fas fa-users text-gray-600 w-6"></i>
+                                                        <label class="text-sm flex-1">Covoiturage</label>
+                                                        <input type="number" id="scope3-cat7-carpool" class="w-20 p-1 border rounded text-sm text-right" placeholder="5" value="5" onchange="calculateScope3()">
+                                                        <span class="text-xs">%</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-2">
+                                                        <i class="fas fa-bus text-gray-600 w-6"></i>
+                                                        <label class="text-sm flex-1">Transport en commun</label>
+                                                        <input type="number" id="scope3-cat7-transit" class="w-20 p-1 border rounded text-sm text-right" placeholder="20" value="20" onchange="calculateScope3()">
+                                                        <span class="text-xs">%</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-2">
+                                                        <i class="fas fa-bicycle text-gray-600 w-6"></i>
+                                                        <label class="text-sm flex-1">Vélo / Marche</label>
+                                                        <input type="number" id="scope3-cat7-bike" class="w-20 p-1 border rounded text-sm text-right" placeholder="10" value="10" onchange="calculateScope3()">
+                                                        <span class="text-xs">%</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-2">
+                                                        <i class="fas fa-home text-gray-600 w-6"></i>
+                                                        <label class="text-sm flex-1">Télétravail</label>
+                                                        <input type="number" id="scope3-cat7-remote" class="w-20 p-1 border rounded text-sm text-right" placeholder="5" value="5" onchange="calculateScope3()">
+                                                        <span class="text-xs">%</span>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-2 text-xs text-gray-500" id="scope3-cat7-total-pct">Total: 100%</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-4 p-3 bg-rose-100 rounded-lg flex justify-between items-center">
+                                            <span class="font-semibold text-rose-800">
+                                                <i class="fas fa-calculator mr-2"></i>Émissions déplacements domicile-travail
+                                            </span>
+                                            <span class="text-xl font-bold text-rose-600" id="scope3-cat7-result">0 t CO2e/an</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 8: Actifs loués amont -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-gray-400">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-gray-400 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">8</span>
+                                            Actifs loués (amont)
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Surface louée (m²)</label>
+                                                <input type="number" id="scope3-cat8-surface" class="w-full p-2 border rounded" placeholder="Ex: 500" onchange="calculateScope3()">
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-gray-600" id="scope3-cat8-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Catégories Aval (9-15) -->
+                            <div id="scope3-aval" class="scope3-category hidden">
+                                <h5 class="font-bold text-lg mb-4 text-green-800">
+                                    <i class="fas fa-arrow-circle-right mr-2"></i>Émissions Aval
+                                </h5>
+                                
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                    <!-- Cat 9: Transport aval -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">9</span>
+                                            Transport et distribution aval
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Tonnes-km (livraison clients)</label>
+                                                <input type="number" id="scope3-cat9-tkm" class="w-full p-2 border rounded" placeholder="Ex: 30000" onchange="calculateScope3()">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Mode principal</label>
+                                                <select id="scope3-cat9-mode" class="w-full p-2 border rounded" onchange="calculateScope3()">
+                                                    <option value="0.062">Camion (route)</option>
+                                                    <option value="0.150">Camionnette (dernier km)</option>
+                                                    <option value="0.022">Train (fret)</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-green-600" id="scope3-cat9-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 10: Transformation des produits -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-green-400">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-green-400 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">10</span>
+                                            Transformation des produits vendus
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Énergie utilisée par transformateurs (kWh)</label>
+                                                <input type="number" id="scope3-cat10-energy" class="w-full p-2 border rounded" placeholder="Ex: 10000" onchange="calculateScope3()">
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-green-600" id="scope3-cat10-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 11: Utilisation des produits -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-teal-500">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-teal-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">11</span>
+                                            Utilisation des produits vendus
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Nombre de produits vendus/an</label>
+                                                <input type="number" id="scope3-cat11-qty" class="w-full p-2 border rounded" placeholder="Ex: 10000" onchange="calculateScope3()">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Consommation par produit (kWh/an)</label>
+                                                <input type="number" id="scope3-cat11-conso" class="w-full p-2 border rounded" placeholder="Ex: 50" onchange="calculateScope3()">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Durée de vie (années)</label>
+                                                <input type="number" id="scope3-cat11-life" class="w-full p-2 border rounded" placeholder="Ex: 5" onchange="calculateScope3()">
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-teal-600" id="scope3-cat11-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 12: Fin de vie des produits -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-orange-500">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">12</span>
+                                            Fin de vie des produits vendus
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Poids total produits vendus (tonnes)</label>
+                                                <input type="number" id="scope3-cat12-weight" class="w-full p-2 border rounded" placeholder="Ex: 100" onchange="calculateScope3()">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Taux de recyclage (%)</label>
+                                                <input type="number" id="scope3-cat12-recycle" class="w-full p-2 border rounded" placeholder="Ex: 30" onchange="calculateScope3()">
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-orange-600" id="scope3-cat12-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 13: Actifs loués aval -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-lime-500">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-lime-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">13</span>
+                                            Actifs loués (aval)
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Surface louée à des tiers (m²)</label>
+                                                <input type="number" id="scope3-cat13-surface" class="w-full p-2 border rounded" placeholder="Ex: 200" onchange="calculateScope3()">
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-lime-600" id="scope3-cat13-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 14: Franchises -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-cyan-500">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-cyan-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">14</span>
+                                            Franchises
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Nombre de franchises</label>
+                                                <input type="number" id="scope3-cat14-count" class="w-full p-2 border rounded" placeholder="Ex: 10" onchange="calculateScope3()">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Émissions moyennes par franchise (t CO2e)</label>
+                                                <input type="number" id="scope3-cat14-avg" class="w-full p-2 border rounded" placeholder="Ex: 50" onchange="calculateScope3()">
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-cyan-600" id="scope3-cat14-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cat 15: Investissements -->
+                                    <div class="bg-white p-4 rounded-lg shadow border-l-4 border-violet-500">
+                                        <h6 class="font-bold mb-3 flex items-center">
+                                            <span class="bg-violet-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-2">15</span>
+                                            Investissements
+                                        </h6>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Montant des investissements (€)</label>
+                                                <input type="number" id="scope3-cat15-amount" class="w-full p-2 border rounded" placeholder="Ex: 1000000" onchange="calculateScope3()">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-1">Secteur d'investissement</label>
+                                                <select id="scope3-cat15-sector" class="w-full p-2 border rounded" onchange="calculateScope3()">
+                                                    <option value="0.0001">Énergies renouvelables</option>
+                                                    <option value="0.0003">Technologies vertes</option>
+                                                    <option value="0.0008">Industrie standard</option>
+                                                    <option value="0.0015">Énergie fossile</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-right text-sm font-semibold text-violet-600" id="scope3-cat15-result">0 t CO2e</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Total Scope 3 -->
+                            <div class="mt-6 p-4 bg-gradient-to-r from-blue-100 to-green-100 rounded-lg border border-blue-300">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-gray-800">
+                                        <i class="fas fa-calculator mr-2"></i>Total Scope 3
+                                    </span>
+                                    <span class="text-2xl font-bold text-primary" id="scope3-total">0 t CO2e/an</span>
+                                </div>
+                                <div class="mt-2 grid grid-cols-2 gap-4 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-blue-700">Amont (Cat. 1-8):</span>
+                                        <span class="font-semibold" id="scope3-amont-total">0 t CO2e</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-green-700">Aval (Cat. 9-15):</span>
+                                        <span class="font-semibold" id="scope3-aval-total">0 t CO2e</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="calculateOrganizationFootprint()" class="bg-primary text-white font-bold py-3 px-6 rounded-lg hover:bg-dark transition">
+                            <i class="fas fa-calculator mr-2"></i>Calculer l'Empreinte
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Calculator -->
+            <div id="product-calculator" class="hidden">
+                <div class="bg-gray-50 rounded-xl shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-6 text-primary flex items-center">
+                        <i class="fas fa-box-open mr-3"></i>Calcul par Produit (ACV Simplifiée)
+                    </h3>
+                    
+                    <!-- Product Configuration -->
+                    <div class="bg-white p-6 rounded-lg shadow mb-6">
+                        <h4 class="text-xl font-semibold mb-4">Configuration du Produit</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Nom du produit</label>
+                                <input type="text" class="w-full p-2 border rounded" placeholder="Ex: Chaise en bois">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Unité fonctionnelle</label>
+                                <input type="text" class="w-full p-2 border rounded" placeholder="Ex: 1 unité produite">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Catégorie de produit</label>
+                                <select class="w-full p-2 border rounded">
+                                    <option>Matériaux de construction</option>
+                                    <option>Équipements électroniques</option>
+                                    <option>Produits alimentaires</option>
+                                    <option>Emballages</option>
+                                    <option>Textile</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Durée de vie estimée (années)</label>
+                                <input type="number" class="w-full p-2 border rounded" placeholder="Ex: 5">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Lifecycle Stages -->
+                    <div class="bg-white p-6 rounded-lg shadow mb-6">
+                        <h4 class="text-xl font-semibold mb-4">Étapes du Cycle de Vie</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="border rounded p-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" checked class="mr-2">
+                                    <h5 class="font-bold">Extraction des matières premières</h5>
+                                </div>
+                                <div class="space-y-2 mt-3">
+                                    <div>
+                                        <label class="block text-xs mb-1">Bois (kg)</label>
+                                        <input type="number" class="w-full p-1 border rounded text-sm" placeholder="Ex: 5">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs mb-1">Acier (kg)</label>
+                                        <input type="number" class="w-full p-1 border rounded text-sm" placeholder="Ex: 2">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs mb-1">Plastique (kg)</label>
+                                        <input type="number" class="w-full p-1 border rounded text-sm" placeholder="Ex: 1">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border rounded p-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" checked class="mr-2">
+                                    <h5 class="font-bold">Transport amont</h5>
+                                </div>
+                                <div class="space-y-2 mt-3">
+                                    <div>
+                                        <label class="block text-xs mb-1">Distance totale (km)</label>
+                                        <input type="number" class="w-full p-1 border rounded text-sm" placeholder="Ex: 500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs mb-1">Mode de transport</label>
+                                        <select class="w-full p-1 border rounded text-sm">
+                                            <option>Route</option>
+                                            <option>Rail</option>
+                                            <option>Mer</option>
+                                            <option>Air</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border rounded p-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" checked class="mr-2">
+                                    <h5 class="font-bold">Fabrication</h5>
+                                </div>
+                                <div class="space-y-2 mt-3">
+                                    <div>
+                                        <label class="block text-xs mb-1">Électricité (kWh)</label>
+                                        <input type="number" class="w-full p-1 border rounded text-sm" placeholder="Ex: 50">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs mb-1">Gaz naturel (kWh)</label>
+                                        <input type="number" class="w-full p-1 border rounded text-sm" placeholder="Ex: 30">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border rounded p-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" checked class="mr-2">
+                                    <h5 class="font-bold">Distribution</h5>
+                                </div>
+                                <div class="space-y-2 mt-3">
+                                    <div>
+                                        <label class="block text-xs mb-1">Distance moyenne (km)</label>
+                                        <input type="number" class="w-full p-1 border rounded text-sm" placeholder="Ex: 200">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs mb-1">Quantité distribuée</label>
+                                        <input type="number" class="w-full p-1 border rounded text-sm" placeholder="Ex: 1000">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border rounded p-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" checked class="mr-2">
+                                    <h5 class="font-bold">Usage</h5>
+                                </div>
+                                <div class="space-y-2 mt-3">
+                                    <div>
+                                        <label class="block text-xs mb-1">Consommation énergétique (kWh/an)</label>
+                                        <input type="number" class="w-full p-1 border rounded text-sm" placeholder="Ex: 0">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border rounded p-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" checked class="mr-2">
+                                    <h5 class="font-bold">Fin de vie</h5>
+                                </div>
+                                <div class="space-y-2 mt-3">
+                                    <div>
+                                        <label class="block text-xs mb-1">Taux de recyclage (%)</label>
+                                        <input type="number" class="w-full p-1 border rounded text-sm" placeholder="Ex: 70">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button onclick="calculateProductFootprint()" class="bg-primary text-white font-bold py-3 px-6 rounded-lg hover:bg-dark transition">
+                            <i class="fas fa-calculator mr-2"></i>Calculer l'Empreinte
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-primary">Résultats de l'Analyse</h2>
+            
+            <!-- Organization Results -->
+            <div id="organization-results" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h3 class="text-2xl font-bold mb-6 text-primary">Empreinte Carbone Organisationnelle</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4">Répartition par Scopes</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <canvas id="scopeChart" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4">Détail des Émissions</h4>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-medium">Scope 1 (Émissions directes)</span>
+                                <span class="font-bold text-red-600">12.5 t CO2e</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-medium">Scope 2 (Énergie achetée)</span>
+                                <span class="font-bold text-orange-600">8.3 t CO2e</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-medium">Scope 3 (Émissions indirectes)</span>
+                                <span class="font-bold text-yellow-600">25.7 t CO2e</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-4 border-t">
+                                <span class="font-bold text-lg">Total</span>
+                                <span class="font-bold text-2xl text-primary">46.5 t CO2e</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h4 class="text-xl font-semibold mb-4">Recommandations</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span>Optimiser l'efficacité énergétique des bâtiments (-15%)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span>Développer le télétravail pour réduire les déplacements (-10%)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span>Choisir des fournisseurs locaux (-8%)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <button onclick="downloadOrganizationPDF()" class="bg-secondary text-white font-bold py-3 px-6 rounded-lg hover:bg-primary transition">
+                        <i class="fas fa-download mr-2"></i>Télécharger le Rapport PDF
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Product Results -->
+            <div id="product-results" class="hidden bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold mb-6 text-primary">Analyse de Cycle de Vie du Produit</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4">Répartition par Étapes</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <canvas id="lifecycleChart" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4">Détail des Émissions</h4>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-medium">Extraction des matières premières</span>
+                                <span class="font-bold text-red-600">3.2 kg CO2e</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-medium">Transport amont</span>
+                                <span class="font-bold text-orange-600">1.8 kg CO2e</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-medium">Fabrication</span>
+                                <span class="font-bold text-yellow-600">2.1 kg CO2e</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-medium">Distribution</span>
+                                <span class="font-bold text-green-600">0.9 kg CO2e</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-medium">Usage</span>
+                                <span class="font-bold text-blue-600">0.0 kg CO2e</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-medium">Fin de vie</span>
+                                <span class="font-bold text-purple-600">-0.7 kg CO2e</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-4 border-t">
+                                <span class="font-bold text-lg">Total</span>
+                                <span class="font-bold text-2xl text-primary">7.3 kg CO2e/unité</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h4 class="text-xl font-semibold mb-4">Scénarios d'Amélioration</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="border rounded-lg p-4 hover:shadow-md transition">
+                            <h5 class="font-bold mb-2">Matériaux recyclés</h5>
+                            <p class="text-sm mb-3">Utilisation de 50% de matériaux recyclés</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">Impact:</span>
+                                <span class="font-bold text-green-600">-1.2 kg CO2e</span>
+                            </div>
+                        </div>
+                        <div class="border rounded-lg p-4 hover:shadow-md transition">
+                            <h5 class="font-bold mb-2">Optimisation du transport</h5>
+                            <p class="text-sm mb-3">Réduction de 30% des distances</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">Impact:</span>
+                                <span class="font-bold text-green-600">-0.5 kg CO2e</span>
+                            </div>
+                        </div>
+                        <div class="border rounded-lg p-4 hover:shadow-md transition">
+                            <h5 class="font-bold mb-2">Allongement de la durée de vie</h5>
+                            <p class="text-sm mb-3">+2 ans d'utilisation</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">Impact:</span>
+                                <span class="font-bold text-green-600">-1.8 kg CO2e</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <button onclick="downloadProductPDF()" class="bg-secondary text-white font-bold py-3 px-6 rounded-lg hover:bg-primary transition">
+                        <i class="fas fa-download mr-2"></i>Télécharger le Rapport PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-primary">Ressources et Méthodologie</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-xl p-6 shadow">
+                    <div class="text-secondary text-4xl mb-4">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Standards Internationaux</h3>
+                    <p class="mb-4">Nos calculs suivent les référentiels GHG Protocol et Bilan Carbone® ADEME pour garantir la rigueur méthodologique.</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>GHG Protocol Corporate Standard</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>Bilan Carbone® Référentiel v16</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>ISO 14064-1</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-50 rounded-xl p-6 shadow">
+                    <div class="text-secondary text-4xl mb-4">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Base de Données d'Émission</h3>
+                    <p class="mb-4">Nous utilisons des facteurs d'émission certifiés provenant de sources fiables et régulièrement mises à jour.</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>Base Carbone® ADEME</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>Ecoinvent</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>IPCC Guidelines</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-50 rounded-xl p-6 shadow">
+                    <div class="text-secondary text-4xl mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Suivi et Amélioration</h3>
+                    <p class="mb-4">Notre solution permet de suivre l'évolution de votre empreinte dans le temps et de mesurer vos actions de réduction.</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>Comparaison annuelle</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>Objectifs de réduction</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>Rapports personnalisés</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-leaf mr-2"></i>EcoCalc Carbon
+                    </h3>
+                    <p class="text-gray-300">
+                        Solution complète pour mesurer et réduire votre empreinte carbone selon les standards internationaux.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Calculateur</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-accent transition">Entreprise (Scopes 1-3)</a></li>
+                        <li><a href="#" class="hover:text-accent transition">Produit (ACV)</a></li>
+                        <li><a href="#" class="hover:text-accent transition">Rapports PDF</a></li>
+                        <li><a href="#" class="hover:text-accent transition">Export données</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Ressources</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-accent transition">Méthodologie</a></li>
+                        <li><a href="#" class="hover:text-accent transition">Facteurs d'émission</a></li>
+                        <li><a href="#" class="hover:text-accent transition">Guides pratiques</a></li>
+                        <li><a href="#" class="hover:text-accent transition">Actualités</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-2"></i>
+                            <span>contact@ecocalc.fr</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-2"></i>
+                            <span>+33 1 23 45 67 89</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
+                            <span>Paris, France</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 EcoCalc Carbon. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <script>
+        // Show calculator based on selection
+        function showCalculator(type) {
+            document.getElementById('organization-calculator').classList.add('hidden');
+            document.getElementById('product-calculator').classList.add('hidden');
+            
+            if (type === 'organization') {
+                document.getElementById('organization-calculator').classList.remove('hidden');
+            } else if (type === 'product') {
+                document.getElementById('product-calculator').classList.remove('hidden');
+            }
+        }
+        
+        // Show scope section
+        function showScope(scopeId) {
+            // Hide all scope sections
+            document.querySelectorAll('.scope-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected scope
+            document.getElementById(scopeId).classList.remove('hidden');
+            
+            // Update tab styling
+            document.querySelectorAll('.scope-tab').forEach(tab => {
+                tab.classList.remove('text-secondary', 'border-secondary');
+                tab.classList.add('text-gray-500');
+            });
+            
+            event.target.classList.remove('text-gray-500');
+            event.target.classList.add('text-secondary', 'border-secondary');
+        }
+        
+        // Initialize with Scope 1 visible
+        window.onload = function() {
+            showScope('scope1');
+        };
+        
+        // Show Scope 3 category (Amont/Aval)
+        function showScope3Category(category) {
+            document.querySelectorAll('.scope3-category').forEach(cat => {
+                cat.classList.add('hidden');
+            });
+            document.getElementById('scope3-' + category).classList.remove('hidden');
+            
+            // Update button styles
+            document.querySelectorAll('.scope3-cat-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-offset-2');
+            });
+            event.target.classList.add('ring-2', 'ring-offset-2');
+        }
+        
+        // Emission factors for Scope 3 calculations
+        const scope3Factors = {
+            electricity_upstream: 0.013, // kg CO2e per kWh (extraction, transport)
+            surface_emissions: 0.025,    // t CO2e per m² per year
+            commute: {
+                car: 0.193,      // kg CO2e per km
+                carpool: 0.097,  // kg CO2e per km (2 persons)
+                transit: 0.035,  // kg CO2e per km
+                bike: 0,         // kg CO2e per km
+                remote: 0        // kg CO2e per km
+            }
+        };
+        
+        // Calculate all Scope 3 emissions
+        function calculateScope3() {
+            let amontTotal = 0;
+            let avalTotal = 0;
+            
+            // Cat 1: Achats
+            const cat1Amount = parseFloat(document.getElementById('scope3-cat1-amount')?.value) || 0;
+            const cat1Factor = parseFloat(document.getElementById('scope3-cat1-type')?.value) || 0.15;
+            const cat1Result = (cat1Amount * cat1Factor) / 1000; // Convert to tonnes
+            document.getElementById('scope3-cat1-result').textContent = cat1Result.toFixed(2) + ' t CO2e';
+            amontTotal += cat1Result;
+            
+            // Cat 2: Biens immobilisés
+            const cat2Amount = parseFloat(document.getElementById('scope3-cat2-amount')?.value) || 0;
+            const cat2Factor = parseFloat(document.getElementById('scope3-cat2-type')?.value) || 0.10;
+            const cat2Result = (cat2Amount * cat2Factor) / 1000;
+            document.getElementById('scope3-cat2-result').textContent = cat2Result.toFixed(2) + ' t CO2e';
+            amontTotal += cat2Result;
+            
+            // Cat 3: Combustibles amont
+            const cat3Elec = parseFloat(document.getElementById('scope3-cat3-elec')?.value) || 0;
+            const cat3Result = (cat3Elec * scope3Factors.electricity_upstream) / 1000;
+            document.getElementById('scope3-cat3-result').textContent = cat3Result.toFixed(2) + ' t CO2e';
+            amontTotal += cat3Result;
+            
+            // Cat 4: Transport amont
+            const cat4Tkm = parseFloat(document.getElementById('scope3-cat4-tkm')?.value) || 0;
+            const cat4Factor = parseFloat(document.getElementById('scope3-cat4-mode')?.value) || 0.062;
+            const cat4Result = (cat4Tkm * cat4Factor) / 1000;
+            document.getElementById('scope3-cat4-result').textContent = cat4Result.toFixed(2) + ' t CO2e';
+            amontTotal += cat4Result;
+            
+            // Cat 5: Déchets
+            const cat5Qty = parseFloat(document.getElementById('scope3-cat5-qty')?.value) || 0;
+            const cat5Factor = parseFloat(document.getElementById('scope3-cat5-type')?.value) || 0.5;
+            const cat5Result = cat5Qty * cat5Factor;
+            document.getElementById('scope3-cat5-result').textContent = cat5Result.toFixed(2) + ' t CO2e';
+            amontTotal += cat5Result;
+            
+            // Cat 6: Voyages d'affaires
+            const cat6Avion = parseFloat(document.getElementById('scope3-cat6-avion')?.value) || 0;
+            const cat6Train = parseFloat(document.getElementById('scope3-cat6-train')?.value) || 0;
+            const cat6Voiture = parseFloat(document.getElementById('scope3-cat6-voiture')?.value) || 0;
+            const cat6Result = ((cat6Avion * 0.230) + (cat6Train * 0.003) + (cat6Voiture * 0.193)) / 1000;
+            document.getElementById('scope3-cat6-result').textContent = cat6Result.toFixed(2) + ' t CO2e';
+            amontTotal += cat6Result;
+            
+            // Cat 7: Déplacements domicile-travail
+            const cat7Employees = parseFloat(document.getElementById('scope3-cat7-employees')?.value) || 0;
+            const cat7Distance = parseFloat(document.getElementById('scope3-cat7-distance')?.value) || 0;
+            const cat7Days = parseFloat(document.getElementById('scope3-cat7-days')?.value) || 220;
+            
+            const cat7Car = parseFloat(document.getElementById('scope3-cat7-car')?.value) || 0;
+            const cat7Carpool = parseFloat(document.getElementById('scope3-cat7-carpool')?.value) || 0;
+            const cat7Transit = parseFloat(document.getElementById('scope3-cat7-transit')?.value) || 0;
+            const cat7Bike = parseFloat(document.getElementById('scope3-cat7-bike')?.value) || 0;
+            const cat7Remote = parseFloat(document.getElementById('scope3-cat7-remote')?.value) || 0;
+            
+            // Update total percentage display
+            const totalPct = cat7Car + cat7Carpool + cat7Transit + cat7Bike + cat7Remote;
+            const pctElement = document.getElementById('scope3-cat7-total-pct');
+            if (pctElement) {
+                pctElement.textContent = 'Total: ' + totalPct + '%';
+                pctElement.className = totalPct === 100 ? 'mt-2 text-xs text-green-600' : 'mt-2 text-xs text-red-600';
+            }
+            
+            // Calculate emissions (distance * 2 for round trip)
+            const annualKm = cat7Distance * 2 * cat7Days;
+            const cat7Result = (cat7Employees * annualKm * (
+                (cat7Car / 100) * scope3Factors.commute.car +
+                (cat7Carpool / 100) * scope3Factors.commute.carpool +
+                (cat7Transit / 100) * scope3Factors.commute.transit +
+                (cat7Bike / 100) * scope3Factors.commute.bike +
+                (cat7Remote / 100) * scope3Factors.commute.remote
+            )) / 1000;
+            document.getElementById('scope3-cat7-result').textContent = cat7Result.toFixed(2) + ' t CO2e/an';
+            amontTotal += cat7Result;
+            
+            // Cat 8: Actifs loués amont
+            const cat8Surface = parseFloat(document.getElementById('scope3-cat8-surface')?.value) || 0;
+            const cat8Result = cat8Surface * scope3Factors.surface_emissions;
+            document.getElementById('scope3-cat8-result').textContent = cat8Result.toFixed(2) + ' t CO2e';
+            amontTotal += cat8Result;
+            
+            // Cat 9: Transport aval
+            const cat9Tkm = parseFloat(document.getElementById('scope3-cat9-tkm')?.value) || 0;
+            const cat9Factor = parseFloat(document.getElementById('scope3-cat9-mode')?.value) || 0.062;
+            const cat9Result = (cat9Tkm * cat9Factor) / 1000;
+            document.getElementById('scope3-cat9-result').textContent = cat9Result.toFixed(2) + ' t CO2e';
+            avalTotal += cat9Result;
+            
+            // Cat 10: Transformation
+            const cat10Energy = parseFloat(document.getElementById('scope3-cat10-energy')?.value) || 0;
+            const cat10Result = (cat10Energy * 0.057) / 1000; // Mix électrique France
+            document.getElementById('scope3-cat10-result').textContent = cat10Result.toFixed(2) + ' t CO2e';
+            avalTotal += cat10Result;
+            
+            // Cat 11: Utilisation des produits
+            const cat11Qty = parseFloat(document.getElementById('scope3-cat11-qty')?.value) || 0;
+            const cat11Conso = parseFloat(document.getElementById('scope3-cat11-conso')?.value) || 0;
+            const cat11Life = parseFloat(document.getElementById('scope3-cat11-life')?.value) || 1;
+            const cat11Result = (cat11Qty * cat11Conso * cat11Life * 0.057) / 1000;
+            document.getElementById('scope3-cat11-result').textContent = cat11Result.toFixed(2) + ' t CO2e';
+            avalTotal += cat11Result;
+            
+            // Cat 12: Fin de vie
+            const cat12Weight = parseFloat(document.getElementById('scope3-cat12-weight')?.value) || 0;
+            const cat12Recycle = parseFloat(document.getElementById('scope3-cat12-recycle')?.value) || 0;
+            const cat12Result = cat12Weight * ((100 - cat12Recycle) / 100) * 0.5; // 0.5 t CO2e per tonne landfill
+            document.getElementById('scope3-cat12-result').textContent = cat12Result.toFixed(2) + ' t CO2e';
+            avalTotal += cat12Result;
+            
+            // Cat 13: Actifs loués aval
+            const cat13Surface = parseFloat(document.getElementById('scope3-cat13-surface')?.value) || 0;
+            const cat13Result = cat13Surface * scope3Factors.surface_emissions;
+            document.getElementById('scope3-cat13-result').textContent = cat13Result.toFixed(2) + ' t CO2e';
+            avalTotal += cat13Result;
+            
+            // Cat 14: Franchises
+            const cat14Count = parseFloat(document.getElementById('scope3-cat14-count')?.value) || 0;
+            const cat14Avg = parseFloat(document.getElementById('scope3-cat14-avg')?.value) || 0;
+            const cat14Result = cat14Count * cat14Avg;
+            document.getElementById('scope3-cat14-result').textContent = cat14Result.toFixed(2) + ' t CO2e';
+            avalTotal += cat14Result;
+            
+            // Cat 15: Investissements
+            const cat15Amount = parseFloat(document.getElementById('scope3-cat15-amount')?.value) || 0;
+            const cat15Factor = parseFloat(document.getElementById('scope3-cat15-sector')?.value) || 0.0003;
+            const cat15Result = cat15Amount * cat15Factor;
+            document.getElementById('scope3-cat15-result').textContent = cat15Result.toFixed(2) + ' t CO2e';
+            avalTotal += cat15Result;
+            
+            // Update totals
+            document.getElementById('scope3-amont-total').textContent = amontTotal.toFixed(2) + ' t CO2e';
+            document.getElementById('scope3-aval-total').textContent = avalTotal.toFixed(2) + ' t CO2e';
+            document.getElementById('scope3-total').textContent = (amontTotal + avalTotal).toFixed(2) + ' t CO2e/an';
+        }
+        
+        // Emission factors for fugitive emissions (kg CO2e per unit per year)
+        // Based on ADEME Base Carbone and average leak rates
+        const fugitiveEmissionFactors = {
+            // Refrigerators - based on refrigerant charge and leak rate
+            fridge: {
+                mini: 15,           // ~0.1 kg R134a, 5% leak, GWP 1430
+                standard: 35,       // ~0.2 kg R134a
+                commercial: 120,    // ~0.5 kg R404A, GWP 3922
+                chambre_pos: 450,   // ~2 kg R404A
+                chambre_neg: 680,   // ~3 kg R404A
+                vitrine: 280        // ~1 kg R404A
+            },
+            // Air conditioners - based on refrigerant charge and leak rate
+            ac: {
+                split_petit: 85,    // ~0.8 kg R410A, 4% leak, GWP 2088
+                split_moyen: 145,   // ~1.5 kg R410A
+                split_grand: 250,   // ~2.5 kg R410A
+                multisplit: 420,    // ~4 kg R410A
+                vrf: 850,           // ~10 kg R410A
+                rooftop: 1200,      // ~15 kg R410A
+                pac: 380            // ~3 kg R410A
+            },
+            // Other equipment
+            other: {
+                fontaine: 25,       // Small charge
+                distributeur: 45,   // Medium charge
+                congelateur: 85,    // Similar to commercial fridge
+                vehicule: 320,      // Transport refrigeration
+                extincteur: 5       // CO2 extinguisher (minimal annual leak)
+            }
+        };
+        
+        // Calculate fugitive emissions
+        function calculateFugitiveEmissions() {
+            // Refrigerators
+            const fridgeType = document.getElementById('fridge-type').value;
+            const fridgeCount = parseFloat(document.getElementById('fridge-count').value) || 0;
+            const fridgeAge = parseFloat(document.getElementById('fridge-age').value) || 1;
+            
+            let fridgeEmissions = 0;
+            if (fridgeType !== '0' && fridgeCount > 0) {
+                fridgeEmissions = fugitiveEmissionFactors.fridge[fridgeType] * fridgeCount * fridgeAge;
+            }
+            document.getElementById('fridge-emissions').textContent = Math.round(fridgeEmissions) + ' kg CO2e/an';
+            
+            // Air conditioners
+            const acType = document.getElementById('ac-type').value;
+            const acCount = parseFloat(document.getElementById('ac-count').value) || 0;
+            const acAge = parseFloat(document.getElementById('ac-age').value) || 1;
+            
+            let acEmissions = 0;
+            if (acType !== '0' && acCount > 0) {
+                acEmissions = fugitiveEmissionFactors.ac[acType] * acCount * acAge;
+            }
+            document.getElementById('ac-emissions').textContent = Math.round(acEmissions) + ' kg CO2e/an';
+            
+            // Other equipment
+            const otherType = document.getElementById('other-type').value;
+            const otherCount = parseFloat(document.getElementById('other-count').value) || 0;
+            const otherAge = parseFloat(document.getElementById('other-age').value) || 1;
+            
+            let otherEmissions = 0;
+            if (otherType !== '0' && otherCount > 0) {
+                otherEmissions = fugitiveEmissionFactors.other[otherType] * otherCount * otherAge;
+            }
+            document.getElementById('other-emissions').textContent = Math.round(otherEmissions) + ' kg CO2e/an';
+            
+            // Total
+            const totalEmissions = fridgeEmissions + acEmissions + otherEmissions;
+            document.getElementById('total-fugitive-emissions').textContent = Math.round(totalEmissions) + ' kg CO2e/an';
+            
+            // Update color based on emission level
+            const totalElement = document.getElementById('total-fugitive-emissions');
+            if (totalEmissions > 2000) {
+                totalElement.className = 'text-xl font-bold text-red-600';
+            } else if (totalEmissions > 500) {
+                totalElement.className = 'text-xl font-bold text-orange-600';
+            } else {
+                totalElement.className = 'text-xl font-bold text-green-700';
+            }
+        }
+        
+        // Calculate organization footprint
+        function calculateOrganizationFootprint() {
+            // In a real app, this would perform calculations
+            // For demo purposes, we'll just show the results
+            document.getElementById('organization-results').classList.remove('hidden');
+            document.getElementById('product-results').classList.add('hidden');
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            
+            // Initialize charts
+            initCharts();
+        }
+        
+        // Calculate product footprint
+        function calculateProductFootprint() {
+            // In a real app, this would perform calculations
+            // For demo purposes, we'll just show the results
+            document.getElementById('product-results').classList.remove('hidden');
+            document.getElementById('organization-results').classList.add('hidden');
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            
+            // Initialize charts
+            initCharts();
+        }
+        
+        // Initialize charts
+        function initCharts() {
+            // Scope distribution chart
+            const scopeCtx = document.getElementById('scopeChart').getContext('2d');
+            if (window.scopeChart) {
+                window.scopeChart.destroy();
+            }
+            window.scopeChart = new Chart(scopeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Scope 1', 'Scope 2', 'Scope 3'],
+                    datasets: [{
+                        data: [12.5, 8.3, 25.7],
+                        backgroundColor: [
+                            '#EF4444',
+                            '#F59E0B',
+                            '#10B981'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Lifecycle chart
+            const lifecycleCtx = document.getElementById('lifecycleChart').getContext('2d');
+            if (window.lifecycleChart) {
+                window.lifecycleChart.destroy();
+            }
+            window.lifecycleChart = new Chart(lifecycleCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Extraction', 'Transport', 'Fabrication', 'Distribution', 'Usage', 'Fin de vie'],
+                    datasets: [{
+                        label: 'Émissions (kg CO2e)',
+                        data: [3.2, 1.8, 2.1, 0.9, 0.0, -0.7],
+                        backgroundColor: [
+                            '#EF4444',
+                            '#F59E0B',
+                            '#10B981',
+                            '#3B82F6',
+                            '#8B5CF6',
+                            '#EC4899'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Download Organization PDF Report
+        function downloadOrganizationPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const currentDate = new Date().toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Header with green background
+            doc.setFillColor(45, 90, 39);
+            doc.rect(0, 0, 210, 40, 'F');
+            
+            // Logo and title
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('EcoCalc Carbon', 20, 20);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Rapport d\'Empreinte Carbone Organisationnelle', 20, 32);
+            
+            // Date
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(10);
+            doc.text('Date du rapport : ' + currentDate, 20, 55);
+            
+            // Summary section
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(45, 90, 39);
+            doc.text('Résumé des Émissions', 20, 70);
+            
+            doc.setDrawColor(45, 90, 39);
+            doc.line(20, 73, 190, 73);
+            
+            // Emissions data
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(0, 0, 0);
+            
+            const emissions = [
+                { label: 'Scope 1 - Émissions directes', value: '12.5 t CO2e', color: [239, 68, 68] },
+                { label: 'Scope 2 - Énergie achetée', value: '8.3 t CO2e', color: [245, 158, 11] },
+                { label: 'Scope 3 - Émissions indirectes', value: '25.7 t CO2e', color: [16, 185, 129] }
+            ];
+            
+            let yPos = 85;
+            emissions.forEach((item, index) => {
+                // Color indicator
+                doc.setFillColor(item.color[0], item.color[1], item.color[2]);
+                doc.circle(25, yPos - 2, 3, 'F');
+                
+                doc.setTextColor(0, 0, 0);
+                doc.text(item.label, 35, yPos);
+                doc.setFont('helvetica', 'bold');
+                doc.text(item.value, 160, yPos);
+                doc.setFont('helvetica', 'normal');
+                yPos += 12;
+            });
+            
+            // Total
+            doc.setDrawColor(200, 200, 200);
+            doc.line(20, yPos, 190, yPos);
+            yPos += 10;
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(45, 90, 39);
+            doc.text('TOTAL', 35, yPos);
+            doc.text('46.5 t CO2e', 150, yPos);
+            
+            // Recommendations section
+            yPos += 25;
+            doc.setFontSize(16);
+            doc.setTextColor(45, 90, 39);
+            doc.text('Recommandations', 20, yPos);
+            doc.setDrawColor(45, 90, 39);
+            doc.line(20, yPos + 3, 190, yPos + 3);
+            
+            const recommendations = [
+                'Optimiser l\'efficacité énergétique des bâtiments (-15%)',
+                'Développer le télétravail pour réduire les déplacements (-10%)',
+                'Choisir des fournisseurs locaux (-8%)',
+                'Passer à l\'électricité verte pour le Scope 2 (-5%)',
+                'Sensibiliser les employés aux éco-gestes (-3%)'
+            ];
+            
+            yPos += 15;
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(0, 0, 0);
+            
+            recommendations.forEach((rec, index) => {
+                doc.setFillColor(76, 175, 80);
+                doc.circle(25, yPos - 2, 2, 'F');
+                doc.text(rec, 32, yPos);
+                yPos += 10;
+            });
+            
+            // Methodology section
+            yPos += 15;
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(45, 90, 39);
+            doc.text('Méthodologie', 20, yPos);
+            doc.setDrawColor(45, 90, 39);
+            doc.line(20, yPos + 3, 190, yPos + 3);
+            
+            yPos += 15;
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(80, 80, 80);
+            const methodology = 'Ce rapport a été généré selon les standards du GHG Protocol et du Bilan Carbone® ADEME. Les facteurs d\'émission utilisés proviennent de la Base Carbone® ADEME (mise à jour 2023). Les résultats sont exprimés en tonnes équivalent CO2 (t CO2e).';
+            const methodologyLines = doc.splitTextToSize(methodology, 170);
+            doc.text(methodologyLines, 20, yPos);
+            
+            // Footer
+            doc.setFillColor(27, 94, 32);
+            doc.rect(0, 280, 210, 17, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(9);
+            doc.text('EcoCalc Carbon - Solution de calcul d\'empreinte carbone', 20, 289);
+            doc.text('www.ecocalc.fr | contact@ecocalc.fr', 130, 289);
+            
+            // Save PDF
+            doc.save('rapport-empreinte-carbone-organisation.pdf');
+            
+            // Show success message
+            showNotification('Rapport PDF téléchargé avec succès !');
+        }
+        
+        // Download Product PDF Report
+        function downloadProductPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const currentDate = new Date().toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Header with green background
+            doc.setFillColor(45, 90, 39);
+            doc.rect(0, 0, 210, 40, 'F');
+            
+            // Logo and title
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('EcoCalc Carbon', 20, 20);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Analyse de Cycle de Vie - Produit', 20, 32);
+            
+            // Date
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(10);
+            doc.text('Date du rapport : ' + currentDate, 20, 55);
+            
+            // Product info
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(45, 90, 39);
+            doc.text('Informations Produit', 20, 70);
+            doc.setDrawColor(45, 90, 39);
+            doc.line(20, 73, 190, 73);
+            
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(0, 0, 0);
+            doc.text('Produit analysé : Produit exemple', 20, 85);
+            doc.text('Unité fonctionnelle : 1 unité produite', 20, 93);
+            doc.text('Durée de vie estimée : 5 ans', 20, 101);
+            
+            // Lifecycle emissions
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(45, 90, 39);
+            doc.text('Émissions par Étape du Cycle de Vie', 20, 120);
+            doc.setDrawColor(45, 90, 39);
+            doc.line(20, 123, 190, 123);
+            
+            const lifecycleData = [
+                { label: 'Extraction des matières premières', value: '3.2 kg CO2e', color: [239, 68, 68] },
+                { label: 'Transport amont', value: '1.8 kg CO2e', color: [245, 158, 11] },
+                { label: 'Fabrication', value: '2.1 kg CO2e', color: [16, 185, 129] },
+                { label: 'Distribution', value: '0.9 kg CO2e', color: [59, 130, 246] },
+                { label: 'Usage', value: '0.0 kg CO2e', color: [139, 92, 246] },
+                { label: 'Fin de vie (recyclage)', value: '-0.7 kg CO2e', color: [236, 72, 153] }
+            ];
+            
+            let yPos = 135;
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            
+            lifecycleData.forEach((item) => {
+                doc.setFillColor(item.color[0], item.color[1], item.color[2]);
+                doc.circle(25, yPos - 2, 3, 'F');
+                doc.setTextColor(0, 0, 0);
+                doc.text(item.label, 35, yPos);
+                doc.setFont('helvetica', 'bold');
+                doc.text(item.value, 160, yPos);
+                doc.setFont('helvetica', 'normal');
+                yPos += 10;
+            });
+            
+            // Total
+            yPos += 5;
+            doc.setDrawColor(200, 200, 200);
+            doc.line(20, yPos, 190, yPos);
+            yPos += 10;
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(45, 90, 39);
+            doc.text('TOTAL', 35, yPos);
+            doc.text('7.3 kg CO2e / unité', 140, yPos);
+            
+            // Improvement scenarios
+            yPos += 20;
+            doc.setFontSize(16);
+            doc.setTextColor(45, 90, 39);
+            doc.text('Scénarios d\'Amélioration', 20, yPos);
+            doc.setDrawColor(45, 90, 39);
+            doc.line(20, yPos + 3, 190, yPos + 3);
+            
+            const scenarios = [
+                { name: 'Matériaux recyclés (50%)', impact: '-1.2 kg CO2e' },
+                { name: 'Optimisation transport (-30%)', impact: '-0.5 kg CO2e' },
+                { name: 'Allongement durée de vie (+2 ans)', impact: '-1.8 kg CO2e' }
+            ];
+            
+            yPos += 15;
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(0, 0, 0);
+            
+            scenarios.forEach((scenario) => {
+                doc.setFillColor(76, 175, 80);
+                doc.circle(25, yPos - 2, 2, 'F');
+                doc.text(scenario.name, 32, yPos);
+                doc.setTextColor(16, 185, 129);
+                doc.setFont('helvetica', 'bold');
+                doc.text(scenario.impact, 160, yPos);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(0, 0, 0);
+                yPos += 10;
+            });
+            
+            // Methodology section
+            yPos += 15;
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(45, 90, 39);
+            doc.text('Méthodologie ACV', 20, yPos);
+            doc.setDrawColor(45, 90, 39);
+            doc.line(20, yPos + 3, 190, yPos + 3);
+            
+            yPos += 15;
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(80, 80, 80);
+            const methodology = 'Cette analyse de cycle de vie simplifiée suit les principes de la norme ISO 14040/14044. Les facteurs d\'émission proviennent des bases de données Ecoinvent et Base Carbone® ADEME. L\'approche "du berceau à la tombe" a été utilisée.';
+            const methodologyLines = doc.splitTextToSize(methodology, 170);
+            doc.text(methodologyLines, 20, yPos);
+            
+            // Footer
+            doc.setFillColor(27, 94, 32);
+            doc.rect(0, 280, 210, 17, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(9);
+            doc.text('EcoCalc Carbon - Solution de calcul d\'empreinte carbone', 20, 289);
+            doc.text('www.ecocalc.fr | contact@ecocalc.fr', 130, 289);
+            
+            // Save PDF
+            doc.save('rapport-acv-produit.pdf');
+            
+            // Show success message
+            showNotification('Rapport PDF téléchargé avec succès !');
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center transform transition-all duration-300 translate-y-20 opacity-0';
+            notification.innerHTML = '<i class="fas fa-check-circle mr-2"></i>' + message;
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-y-20', 'opacity-0');
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.classList.add('translate-y-20', 'opacity-0');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
